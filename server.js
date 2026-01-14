@@ -24,7 +24,7 @@ app.listen(port, () =>  {
 
 app.get('/allcards', async (req, res) => {
     try {
-        let connection = await mysql.createConnection({dbConfig});
+        let connection = await mysql.createConnection(dbConfig);
         const [rows] = await connection.execute('SELECT * FROM defaultdb.cards')
         res.json(rows);
     }   catch(err) {
@@ -36,7 +36,7 @@ app.get('/allcards', async (req, res) => {
 app.post('/addcard', async (req, res) => {
     const { card_name, card_pic} = req.body;
     try {
-        let connection = await mysql.createConnection({dbConfig})
+        let connection = await mysql.createConnection(dbConfig)
         await connection.execute('INSERT INTO cards (card_name, card_pic) VALUES (?,?)', [card_name, card_pic]);
         res.status(201).json({message: `Card ${card_name} added successfully.`});
     } catch(err) {
@@ -44,4 +44,3 @@ app.post('/addcard', async (req, res) => {
         res.status(500).json({message: `Server Error - could not add card ${card_name}`});
     }
 });
-
